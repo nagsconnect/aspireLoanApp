@@ -19,13 +19,9 @@ public class DefaultLoanApplicationService implements LoanApplicationService {
     }
     @Override
     public LoanApplication createLoanApplication(LoanApplication loanApplication) {
-        StringBuilder applicationIdBuilder = new StringBuilder();
-        applicationIdBuilder.append(loanApplication.userId).append(", ");
-        applicationIdBuilder.append(loanApplication.accountId).append(", ");
-        applicationIdBuilder.append(loanApplicationDao.getLoanApplicationNumber());
-        loanApplication.applicationId = applicationIdBuilder.toString();
+        loanApplication.applicationId = String.valueOf(loanApplicationDao.getLoanApplicationNumber());
         loanApplication.status = LoanStatus.CREATED;
-        loanApplicationDao.create(applicationIdBuilder.toString(), loanApplication);
+        loanApplicationDao.create(loanApplication.applicationId, loanApplication);
         return loanApplication;
     }
 
