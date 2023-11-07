@@ -10,4 +10,5 @@ public class User {
     public String name;
     public Date createdAt;
     public Date updatedAt;
+    public UserRole role = UserRole.CUSTOMER;
 }

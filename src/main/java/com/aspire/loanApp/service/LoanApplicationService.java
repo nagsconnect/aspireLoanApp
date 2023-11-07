@@ -10,4 +10,6 @@ public interface LoanApplicationService {
     boolean exists(String applicationId);
 
     LoanApplication submitLoanApplication(String applicationId);
+
+    LoanApplication process(String applicationId, String userId);
 }

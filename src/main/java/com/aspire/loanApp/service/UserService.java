@@ -5,4 +5,6 @@ import com.aspire.loanApp.entity.User;
 public interface UserService {
     void addUser(User user);
     boolean userExists(String userId);
+
+    boolean isAdmin(String userId);
 }

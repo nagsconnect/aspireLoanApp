@@ -1,16 +1,14 @@
 package com.aspire.loanApp;
 
-import com.aspire.loanApp.dao.inmemory.AccountDao;
-import com.aspire.loanApp.dao.inmemory.LoanApplicationDao;
-import com.aspire.loanApp.dao.inmemory.UserDao;
-import com.aspire.loanApp.entity.Account;
-import com.aspire.loanApp.entity.LoanApplication;
-import com.aspire.loanApp.entity.User;
+import com.aspire.loanApp.dao.inmemory.*;
+import com.aspire.loanApp.entity.*;
 import com.aspire.loanApp.service.AccountService;
 import com.aspire.loanApp.service.LoanApplicationService;
+import com.aspire.loanApp.service.PaymentService;
 import com.aspire.loanApp.service.UserService;
 import com.aspire.loanApp.service.impl.DefaultAccountService;
 import com.aspire.loanApp.service.impl.DefaultLoanApplicationService;
+import com.aspire.loanApp.service.impl.DefaultPaymentService;
 import com.aspire.loanApp.service.impl.DefaultUserService;
 
 /*
@@ -24,12 +22,19 @@ public class LoanAppTestSetup {
     public AccountService accountService;
     public UserService userService;
 
+    public PaymentService paymentService;
     public LoanApplicationService loanApplicationService;
 
     private LoanAppTestSetup() {
-        accountService = new DefaultAccountService(new AccountDao());
-        userService = new DefaultUserService(new UserDao());
-        loanApplicationService = new DefaultLoanApplicationService(new LoanApplicationDao());
+        AccountDao accountDao = new AccountDao();
+        UserDao userDao = new UserDao();
+        ScheduledPaymentDao scheduledPaymentDao = new ScheduledPaymentDao();
+        TransactionDao transactionDao = new TransactionDao();
+        LoanApplicationDao loanApplicationDao = new LoanApplicationDao();
+        accountService = new DefaultAccountService(accountDao);
+        userService = new DefaultUserService(userDao);
+        paymentService = new DefaultPaymentService(scheduledPaymentDao, transactionDao, accountDao);
+        loanApplicationService = new DefaultLoanApplicationService(loanApplicationDao, paymentService);
         setupDefaultUsersAndAccounts();
         createSampleLoanApplication();
     }
