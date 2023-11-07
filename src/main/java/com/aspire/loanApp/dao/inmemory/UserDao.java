@@ -2,11 +2,13 @@ package com.aspire.loanApp.dao.inmemory;
 
 import com.aspire.loanApp.dao.BaseDao;
 import com.aspire.loanApp.entity.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Repository
 public class UserDao implements BaseDao<String, User> {
     private final Map<String, User> users = new HashMap<>();
     

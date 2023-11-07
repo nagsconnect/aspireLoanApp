@@ -3,12 +3,15 @@ package com.aspire.loanApp.dao.inmemory;
 import com.aspire.loanApp.dao.BaseDao;
 import com.aspire.loanApp.entity.LoanApplication;
 import com.aspire.loanApp.entity.LoanStatus;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Repository
 public class LoanApplicationDao implements BaseDao<String, LoanApplication> {
+    private long loanApplicationNumber = 1;
     private final Map<String, LoanApplication> loanApplications = new HashMap<>();
     @Override
     public void create(String applicationId, LoanApplication loanApplication) {
@@ -37,5 +40,9 @@ public class LoanApplicationDao implements BaseDao<String, LoanApplication> {
                 loanApplication.status = LoanStatus.CANCELLED;
             }
         }
+    }
+
+    public long getLoanApplicationNumber() {
+        return loanApplicationNumber++;
     }
 }

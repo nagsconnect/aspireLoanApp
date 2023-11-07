@@ -22,8 +22,8 @@ User Behavior(in words), APIs, entities involved, dbSchema
 2. Once application is created, Loan application is submitted for verification, then loanApplication status is set to PENDING.
 
 ##### APIs involved:
-createLoanApplication -> POST /v1/loan-applications
-submitLoanApplication -> PUT /v1/loan-applications/{appId}/submit
+* createLoanApplication -> POST /v1/loan-applications
+* submitLoanApplication -> PUT /v1/loan-applications/{appId}/submit
 
 ##### Entities involved:
 User, Account, LoanApplication
@@ -32,7 +32,7 @@ Table schema required for loan application creation
 ##### LoanApplicationStatus/Status
 CREATED, PENDING, APPROVED, PROCESSED, CLOSED
 ##### LoanApplication
-* applicationId, userId, loanAmount, loanTerm, processingFee, status
+* applicationId, userId, accountId, loanAmount, loanTerm, processingFee, status
 
 #### Admin approving the loanApplication
 1. Admin can get all the applications in pending state

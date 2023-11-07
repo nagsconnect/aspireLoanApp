@@ -6,6 +6,7 @@ import lombok.Data;
 public class LoanApplication {
     public String applicationId;
     public String userId;
+    public String accountId;
     public double amount;
     public int term;
     public double processingFee;

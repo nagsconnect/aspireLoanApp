@@ -5,9 +5,11 @@ import com.aspire.loanApp.entity.Account;
 import com.aspire.loanApp.entity.AccountStatus;
 import com.aspire.loanApp.entity.LoanApplication;
 import com.aspire.loanApp.entity.LoanStatus;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+@Repository
 public class AccountDao implements BaseDao<String, Account> {
     private final Map<String, Account> accounts = new HashMap<>();
     @Override
