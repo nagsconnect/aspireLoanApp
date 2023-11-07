@@ -68,7 +68,7 @@ update balance of main account and customer account
 
 
 #### Customer can view all loans belongs against his userId
-1. customer can get all loan application details against userId
+1. customer can get all loan application details against userId or get one loan application based on applicationId
 2. Customer can view pendingAmount, amountPaid and all payment details at transaction level for a loanApplication
 
 ##### APIs involved:

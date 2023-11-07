@@ -2,13 +2,19 @@ package com.aspire.loanApp.controller;
 
 import com.aspire.loanApp.entity.LoanApplication;
 import com.aspire.loanApp.entity.LoanStatus;
+import com.aspire.loanApp.entity.PaymentStatus;
+import com.aspire.loanApp.entity.ScheduledPayment;
+import com.aspire.loanApp.entity.response.LoanApplicationDetails;
 import com.aspire.loanApp.service.AccountService;
 import com.aspire.loanApp.service.LoanApplicationService;
+import com.aspire.loanApp.service.PaymentService;
 import com.aspire.loanApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("v1/loan-applications")
@@ -16,12 +22,14 @@ public class LoanApplicationController {
     private final LoanApplicationService loanApplicationService;
     private final AccountService accountService;
     private final UserService userService;
+    private final PaymentService paymentService;
 
     @Autowired
-    public LoanApplicationController(LoanApplicationService loanApplicationService, AccountService accountService, UserService userService) {
+    public LoanApplicationController(LoanApplicationService loanApplicationService, AccountService accountService, UserService userService, PaymentService paymentService) {
         this.loanApplicationService = loanApplicationService;
         this.accountService = accountService;
         this.userService = userService;
+        this.paymentService = paymentService;
     }
 
     @PostMapping
@@ -70,6 +78,51 @@ public class LoanApplicationController {
 
         LoanApplication processedLoanApplication = loanApplicationService.process(applicationId, userId);
         return ResponseEntity.status(HttpStatus.OK).body(processedLoanApplication);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getLoanApplication(
+            @RequestParam String applicationId
+    ) {
+        if (!loanApplicationService.exists(applicationId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Loan Application not found");
+        }
+
+        LoanApplication loanApplication = loanApplicationService.getLoanApplication(applicationId);
+        return ResponseEntity.status(HttpStatus.OK).body(loanApplication);
+    }
+
+    @GetMapping("/details")
+    public ResponseEntity<?> getLoanApplicationScheduledPayment(
+            @RequestParam String applicationId
+    ) {
+        if (!loanApplicationService.exists(applicationId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Loan Application not found");
+        }
+
+        LoanApplicationDetails loanApplicationDetails = new LoanApplicationDetails();
+        loanApplicationDetails.scheduledPaymentList = paymentService.getScheduledPayment(applicationId);
+        loanApplicationDetails.loanApplication = loanApplicationService.getLoanApplication(applicationId);
+        double loanAmount = loanApplicationDetails.loanApplication.amount;
+        for (ScheduledPayment scheduledPayment : loanApplicationDetails.scheduledPaymentList) {
+            if (scheduledPayment.status == PaymentStatus.PAID) {
+                loanApplicationDetails.paidAmount += scheduledPayment.amount;
+            }
+        }
+        loanApplicationDetails.pendingAmount = loanAmount - loanApplicationDetails.paidAmount;
+        return ResponseEntity.status(HttpStatus.OK).body(loanApplicationDetails);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<?> getAllLoanApplicationForUser(
+            @RequestParam String userId
+    ) {
+        if (!userService.userExists(userId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        List<LoanApplication> userLoanApplications = loanApplicationService.getLoanApplicationsOfUser(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(userLoanApplications);
     }
 
     private boolean isValidClientRequest(LoanApplication loanApplication) {

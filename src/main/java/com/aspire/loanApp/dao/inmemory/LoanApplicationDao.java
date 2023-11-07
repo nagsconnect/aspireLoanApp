@@ -5,9 +5,7 @@ import com.aspire.loanApp.entity.LoanApplication;
 import com.aspire.loanApp.entity.LoanStatus;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class LoanApplicationDao implements BaseDao<String, LoanApplication> {
@@ -40,6 +38,16 @@ public class LoanApplicationDao implements BaseDao<String, LoanApplication> {
                 loanApplication.status = LoanStatus.CANCELLED;
             }
         }
+    }
+
+    public List<LoanApplication> getLoanApplicationsForUser(String userId) {
+        List<LoanApplication> loanApplicationList = new ArrayList<>();
+        for (LoanApplication loanApplication : loanApplications.values()) {
+            if (Objects.equals(loanApplication.userId, userId)) {
+                loanApplicationList.add(loanApplication);
+            }
+        }
+        return loanApplicationList;
     }
 
     public long getLoanApplicationNumber() {

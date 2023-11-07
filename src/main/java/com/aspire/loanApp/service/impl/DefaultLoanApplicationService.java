@@ -8,6 +8,7 @@ import com.aspire.loanApp.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -50,6 +51,11 @@ public class DefaultLoanApplicationService implements LoanApplicationService {
         LoanApplication loanApplication = getLoanApplication(applicationId);
         loanApplication.status = LoanStatus.APPROVED;
         return disburse(loanApplication);
+    }
+
+    @Override
+    public List<LoanApplication> getLoanApplicationsOfUser(String userId) {
+        return loanApplicationDao.getLoanApplicationsForUser(userId);
     }
 
     private LoanApplication disburse(LoanApplication loanApplication) {
