@@ -7,13 +7,16 @@ Backend APIs implementation for a Loan Application more details in Readme.md sec
 * below schema available with the application,
 #### User
 id, name, address, createdAt, updatedAt
+##### AccountStatus
+ACTIVE, CLOSED
 #### Account
-accountId, balance, userId
+accountId, balance, userId, accountStatus
 #### Transaction
 transactionId, toAccountId, fromAccountId, amount, createdAt, transactionStatus
 
 ## Loan App details
-### UserFlow and Schema definition around the different actions
+### Brainstorming different user actions to implementation
+User Behavior(in words), APIs, entities involved, dbSchema
 #### Customer creating a loan application
 1. User creates an application with requirement loan amount, loan tenure/term, then loanApplication status set to CREATED
 2. Once application is created, Loan application is submitted for verification, then loanApplication status is set to PENDING.
@@ -21,6 +24,9 @@ transactionId, toAccountId, fromAccountId, amount, createdAt, transactionStatus
 ##### APIs involved:
 createLoanApplication -> POST /v1/loan-applications
 submitLoanApplication -> PUT /v1/loan-applications/{appId}/submit
+
+##### Entities involved:
+User, Account, LoanApplication
 
 Table schema required for loan application creation
 ##### LoanApplicationStatus/Status
