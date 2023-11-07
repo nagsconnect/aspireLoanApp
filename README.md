@@ -1,12 +1,12 @@
 # aspireLoanApp
-Backend APIs implementation for a Loan Application more details in Readme.md section, using in-memory db
+Backend APIs implementation for a Loan Application more details in Readme.md section, using in-memory objects as db
 
 ## System requirements to Run the app 
 * JAVA 17, maven, PostMan, any JVM supported ide(to debug)
 * once repo is pulled to local machine, use below command as this assures system is ready
-**mvn clean -e install** 
+```mvn clean -e install ```
 * Use below command to run the application and use postman collection to use apis
-**mvn spring-boot:run** 
+```mvn spring-boot:run```
 
 ## Assumptions:
 * Users are already registered and authenticated to use this app
@@ -86,6 +86,9 @@ Reusing the tables, LoanApplication, Transaction, User to fetch details
 * In case of greater amount, 
   * extraAmount, the last term amount is adjusted with extraAmount
   * In case of last term amount turns negative, the last to second term is adjusted and so on.
-
+* if there is any extra amount paid, then it is returned to user via payment gateway(assumption), given that extra amount is captured in history of scheduled payments
 ##### APIs involved:
 loanRepayment -> POST /v1/payment?applicationId={appId}&termId={termId}
+
+##### Schema
+PaymentStatus -> PAID, PENDING, CANCELLED
