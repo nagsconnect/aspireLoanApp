@@ -32,9 +32,9 @@ public class LoanApplicationController {
         return new ResponseEntity<>(createdLoanApplication, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{applicationId}/submit")
+    @PutMapping("/submit")
     public ResponseEntity<?> submitLoanApplication(
-            @PathVariable String applicationId) {
+            @RequestParam String applicationId) {
         if (!loanApplicationService.exists(applicationId)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Loan Application not found");
         }

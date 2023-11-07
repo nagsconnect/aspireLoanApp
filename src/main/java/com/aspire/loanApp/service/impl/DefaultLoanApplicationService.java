@@ -24,6 +24,7 @@ public class DefaultLoanApplicationService implements LoanApplicationService {
         applicationIdBuilder.append(loanApplication.accountId).append(", ");
         applicationIdBuilder.append(loanApplicationDao.getLoanApplicationNumber());
         loanApplication.applicationId = applicationIdBuilder.toString();
+        loanApplication.status = LoanStatus.CREATED;
         loanApplicationDao.create(applicationIdBuilder.toString(), loanApplication);
         return loanApplication;
     }
