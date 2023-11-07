@@ -3,18 +3,36 @@ Backend APIs implementation for a Loan Application more details in Readme.md sec
 
 ## System requirements to Run the app 
 * JAVA 17, maven, PostMan, any JVM supported ide(to debug)
-```
-Alternatively download the file named setupMacOs.sh for getting all dependencies related to run this repo
-
-once downloaded, just run that bash script from the path it is present
-
-chmod +x setupMacOs.sh
-```
 * once repo is pulled to local machine, use below command as this assures system is ready
 ```mvn clean -e install ```
 * Use below command to run the application and use postman collection to use apis
 ```mvn spring-boot:run```
 
+## Alternative, system setup using script
+* Alternatively download the file named setupMacOs.sh for getting all dependencies related to run this repo
+* Once file is downloaded then follow below command in order:
+```
+cd {toPathOfSetupMacOsFile}
+chmod +x setupMacOs.sh
+mvn spring-boot:run
+```
+## Run the App - Yup ShowTime!!!! <<MUST READ, should help you>>
+* Assuming postman is downloaded and import the json file from folder **postmanCollection** of the repo cloned/git
+* There are various apis supported with each api explained below as per customer actions.
+* Before running any api, ensure the spring boot application is running on localhost
+### Follow stepwise for application functionality (you can any order to see how apis handle exceptions/validations)
+Each of the step mentioned below has example data that shows required fields associated with each request to succeed.
+* First, Run the apis in folder ```prereqToRun``` with example data. This should create users, accounts
+* Second, Create a loan application with existing user and account details. (yeah you can try with wrong/no such details but it shouldn't work thats the expectation)
+* Next, Submit the loanApplication which is already created (one can't submit loanApplication if already processed/submitted/closed)
+* Next, Admin should be able to approve any loanApplication that is in PENDING state given the loanApplicationId
+  * This submission does multiple things in background, like once loan application APPROVED
+    1. Do schedule payments for recollection of amount, term-wise (here assumption of term is weekly)
+    2. Disburse amount as per loanApplication via payment gateway (OH YEAH!! no real integration just assume in code we do call disburse() functionality)
+* Next, User must be able to view all loanApplications related to their userId
+* Apart from that, user can view detailed view of loanApplication with scheduled payment details, loan application details, paidAmount, pendingAmountToBePaid
+* Then, User can pay via payments api for scheduledPayment (assuming scheduledPayment via cron job sends some notification/forces to pay when user opens bank app for each week)
+* Finally, you can check how does loanApplication view once payment made, try scenarios like paying extra amount, paying less amount that required in term payment. (Logic behind how they are handled explained below)
 ## Assumptions:
 * Users are already registered and authenticated to use this app
 * Users taken loanTerm is in weeks
@@ -93,6 +111,7 @@ Reusing the tables, LoanApplication, Transaction, User to fetch details
 * In case of greater amount, 
   * extraAmount, the last term amount is adjusted with extraAmount
   * In case of last term amount turns negative, the last to second term is adjusted and so on.
+  * Whenever extraAmount sufficient to pay term amount then that particular term payment status stands cancelled.
 * if there is any extra amount paid, then it is returned to user via payment gateway(assumption), given that extra amount is captured in history of scheduled payments
 ##### APIs involved:
 loanRepayment -> POST /v1/payment?applicationId={appId}&termId={termId}
