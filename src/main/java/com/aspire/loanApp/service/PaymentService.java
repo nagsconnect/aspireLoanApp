@@ -12,4 +12,6 @@ public interface PaymentService {
     void disburseAmount(LoanApplication loanApplication);
 
     List<ScheduledPayment> getScheduledPayment(String loanApplicationId);
+
+    List<ScheduledPayment> payScheduledPayment(String loanApplicationId, int term, double amount);
 }

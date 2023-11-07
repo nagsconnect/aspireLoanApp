@@ -4,6 +4,7 @@ import com.aspire.loanApp.dao.inmemory.AccountDao;
 import com.aspire.loanApp.dao.inmemory.ScheduledPaymentDao;
 import com.aspire.loanApp.dao.inmemory.TransactionDao;
 import com.aspire.loanApp.entity.LoanApplication;
+import com.aspire.loanApp.entity.PaymentStatus;
 import com.aspire.loanApp.entity.ScheduledPayment;
 import com.aspire.loanApp.entity.Transaction;
 import com.aspire.loanApp.service.PaymentService;
@@ -65,5 +66,34 @@ public class DefaultPaymentService implements PaymentService {
     @Override
     public List<ScheduledPayment> getScheduledPayment(String loanApplicationId) {
         return scheduledPaymentDao.get(loanApplicationId).orElseThrow(() -> new NoSuchElementException("no loan application found"));
+    }
+
+    @Override
+    public List<ScheduledPayment> payScheduledPayment(String loanApplicationId, int term, double amount) {
+        // external call to payment gateway to process the amount towards loan amount
+        List<ScheduledPayment> scheduledPaymentList = getScheduledPayment(loanApplicationId);
+        ScheduledPayment curScheduledPayment = scheduledPaymentList.get(term - 1);
+        double extraAmount = 0;
+        if (curScheduledPayment.amount <= amount) {
+            curScheduledPayment.status = PaymentStatus.PAID;
+            curScheduledPayment.paidAmount = amount;
+            extraAmount = amount - curScheduledPayment.amount;
+        }
+        int termIndex = scheduledPaymentList.size() - 1;
+        while (extraAmount > 0 && termIndex > term) {
+            scheduledPaymentList.get(termIndex).amount -= extraAmount;
+            if (scheduledPaymentList.get(termIndex).amount < 0) {
+                scheduledPaymentList.get(termIndex).amount = 0;
+            }
+            extraAmount -= scheduledPaymentList.get(termIndex).amount;
+            if (extraAmount >= 0) {
+                scheduledPaymentList.get(termIndex).status = PaymentStatus.CANCELLED;
+            }
+            termIndex--;
+        }
+        if (extraAmount > 0) {
+            // call payment gateway to refund the extraAmount (in case)
+        }
+        return getScheduledPayment(loanApplicationId);
     }
 }

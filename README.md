@@ -10,6 +10,8 @@ Backend APIs implementation for a Loan Application more details in Readme.md sec
 
 ## Assumptions:
 * Users are already registered and authenticated to use this app
+* Users taken loanTerm is in weeks
+* Users taken loan can be repaid during scheduled payment date only but can pay higher amount for which the extra amount is adjusted from user last term ordered by paymentDate.
 * below schema available with the application,
 #### User
 id, name, address, createdAt, updatedAt
@@ -72,19 +74,18 @@ update balance of main account and customer account
 2. Customer can view pendingAmount, amountPaid and all payment details at transaction level for a loanApplication
 
 ##### APIs involved:
-getLoanApplicationsForUser -> GET /v1/loan-applications/{userId}
-getLoanApplicationDetails -> GET /v1/loan-applications/{appId}
+getAllLoanApplicationsForUser -> GET /v1/loan-applications/users?UserId={userId}
+getLoanApplicationDetails -> GET /v1/loan-applications/details?applicationId={appId}
+getLoanApplication -> GET /v1/loan-applications?applicationId={appId}
 
-Reusing the tables, LoanApplication, Transaction, User to fetch details 
-##### LoanRepaymentTransaction
-* this has all repayment transactions related to the loan application id
-* id, transactionId, applicationId
+Reusing the tables, LoanApplication, Transaction, User to fetch details
 
-#### Customer repayment 
+#### Customer repayment
+* All scheduled payments are weekly here and the scheduled payment triggers a notification via a cron job (that is external to this application)
 * Customer can repay the loan during term scheduled with either greater than or equal to scheduled amount
 * In case of greater amount, 
   * extraAmount, the last term amount is adjusted with extraAmount
   * In case of last term amount turns negative, the last to second term is adjusted and so on.
 
 ##### APIs involved:
-loanRepayment -> POST /v1/payment/{appId}/{scheduledId}
+loanRepayment -> POST /v1/payment?applicationId={appId}&termId={termId}
