@@ -3,6 +3,13 @@ Backend APIs implementation for a Loan Application more details in Readme.md sec
 
 ## System requirements to Run the app 
 * JAVA 17, maven, PostMan, any JVM supported ide(to debug)
+```
+Alternatively download the file named setupMacOs.sh for getting all dependencies related to run this repo
+
+once downloaded, just run that bash script from the path it is present
+
+chmod +x setupMacOs.sh
+```
 * once repo is pulled to local machine, use below command as this assures system is ready
 ```mvn clean -e install ```
 * Use below command to run the application and use postman collection to use apis
