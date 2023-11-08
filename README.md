@@ -20,7 +20,9 @@ mvn spring-boot:run
 * Assuming postman is downloaded and import the json file from folder **postmanCollection** of the repo cloned/git
 * There are various apis supported with each api explained below as per customer actions.
 * Before running any api, ensure the spring boot application is running on localhost
-* Run the unit tests via any jvm ide. UnitTests are covered for all service layer functionality.
+* Run the unit tests via any jvm ide. UnitTests are covered for all service layer functionality. Use testng to run the UTs
+  ![image](https://github.com/nagsconnect/aspireLoanApp/assets/125869861/34e7bfcf-54bc-44e0-98ba-6a45beec215a)
+
 ### Follow stepwise for application functionality (you can any order to see how apis handle exceptions/validations)
 Each of the step mentioned below has example data that shows required fields associated with each request to succeed.
 * First, Run the apis in folder ```prereqToRun``` with example data. This should create users, accounts
