@@ -23,7 +23,7 @@ mvn spring-boot:run
 * Run the unit tests via any jvm ide. UnitTests are covered for all service layer functionality. Use testng to run the UTs
   ![image](https://github.com/nagsconnect/aspireLoanApp/assets/125869861/34e7bfcf-54bc-44e0-98ba-6a45beec215a)
 
-### Follow stepwise for application functionality (you can any order to see how apis handle exceptions/validations)
+### Follow stepwise for application functionality (you can run in any order to see how apis handle exceptions/validations)
 Each of the step mentioned below has example data that shows required fields associated with each request to succeed.
 * First, Run the apis in folder ```prereqToRun``` with example data. This should create users, accounts
 * Second, Create a loan application with existing user and account details. (yeah you can try with wrong/no such details but it shouldn't work thats the expectation)
