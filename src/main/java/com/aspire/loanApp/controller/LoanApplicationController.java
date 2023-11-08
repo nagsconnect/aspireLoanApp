@@ -125,6 +125,27 @@ public class LoanApplicationController {
         return ResponseEntity.status(HttpStatus.OK).body(userLoanApplications);
     }
 
+    @PutMapping("/close")
+    public ResponseEntity<?> closeLoanApplication(
+            @RequestParam String applicationId,
+            @RequestParam String userId
+    ) {
+        if (!loanApplicationService.exists(applicationId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Loan Application not found");
+        }
+
+        if (!userService.isAdmin(userId)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Access Denied");
+        }
+
+        LoanApplication loanApplication =  loanApplicationService.closeLoanApplication(applicationId);
+
+        if (loanApplication.status != LoanStatus.CLOSED) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Loan Application can't be closed, PaidAmount not tallied with loanProcessedAmount");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(loanApplication);
+    }
+
     private boolean isValidClientRequest(LoanApplication loanApplication) {
         if (!accountService.accountValidation(loanApplication.accountId, loanApplication.userId)) {
             return false;

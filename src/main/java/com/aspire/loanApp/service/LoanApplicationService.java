@@ -16,4 +16,6 @@ public interface LoanApplicationService {
     LoanApplication process(String applicationId, String userId);
 
     List<LoanApplication> getLoanApplicationsOfUser(String userId);
+
+    LoanApplication closeLoanApplication(String applicationId);
 }

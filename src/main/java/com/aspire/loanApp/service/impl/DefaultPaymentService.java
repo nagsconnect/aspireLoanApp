@@ -80,9 +80,9 @@ public class DefaultPaymentService implements PaymentService {
             extraAmount = amount - curScheduledPayment.amount;
         }
         int termIndex = scheduledPaymentList.size() - 1;
-        while (extraAmount > 0 && termIndex > term) {
+        while (extraAmount > 0 && termIndex >= term) {
             scheduledPaymentList.get(termIndex).amount -= extraAmount;
-            if (scheduledPaymentList.get(termIndex).amount < 0) {
+            if (scheduledPaymentList.get(termIndex).amount <= 0) {
                 scheduledPaymentList.get(termIndex).amount = 0;
             }
             extraAmount -= scheduledPaymentList.get(termIndex).amount;

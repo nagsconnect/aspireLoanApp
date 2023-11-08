@@ -36,6 +36,7 @@ Each of the step mentioned below has example data that shows required fields ass
 * Apart from that, user can view detailed view of loanApplication with scheduled payment details, loan application details, paidAmount, pendingAmountToBePaid
 * Then, User can pay via payments api for scheduledPayment (assuming scheduledPayment via cron job sends some notification/forces to pay when user opens bank app for each week)
 * Finally, you can check how does loanApplication view once payment made, try scenarios like paying extra amount, paying less amount that required in term payment. (Logic behind how they are handled explained below)
+* Last to add, loanApplication can be closed by admin given applicationId
 ## Assumptions:
 * Users are already registered and authenticated to use this app
 * Users taken loanTerm is in weeks

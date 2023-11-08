@@ -39,7 +39,13 @@ public class PaymentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Loan scheduled term is incorrect");
         }
 
-        ScheduledPayment scheduledPayment = paymentService.getScheduledPayment(loanApplicationId).get(term - 1);
+        List<ScheduledPayment> scheduledPaymentList = paymentService.getScheduledPayment(loanApplicationId);
+        ScheduledPayment prevScheduledPayment = term - 2 >= 0 ? scheduledPaymentList.get(term - 2) : null;
+        ScheduledPayment  scheduledPayment = scheduledPaymentList.get(term - 1);
+        if (prevScheduledPayment != null && prevScheduledPayment.status == PaymentStatus.PENDING) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Previous scheduled payment term is pending, connect with customer suppport and clear ");
+        }
+
         if (scheduledPayment.status != PaymentStatus.PENDING) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This scheduled payment term is not pending, current status is " + scheduledPayment.status);
         }

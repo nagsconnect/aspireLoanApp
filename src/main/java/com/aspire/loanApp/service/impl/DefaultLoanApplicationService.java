@@ -3,6 +3,8 @@ package com.aspire.loanApp.service.impl;
 import com.aspire.loanApp.dao.inmemory.LoanApplicationDao;
 import com.aspire.loanApp.entity.LoanApplication;
 import com.aspire.loanApp.entity.LoanStatus;
+import com.aspire.loanApp.entity.PaymentStatus;
+import com.aspire.loanApp.entity.ScheduledPayment;
 import com.aspire.loanApp.service.LoanApplicationService;
 import com.aspire.loanApp.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,22 @@ public class DefaultLoanApplicationService implements LoanApplicationService {
     @Override
     public List<LoanApplication> getLoanApplicationsOfUser(String userId) {
         return loanApplicationDao.getLoanApplicationsForUser(userId);
+    }
+
+    @Override
+    public LoanApplication closeLoanApplication(String applicationId) {
+        LoanApplication loanApplication = getLoanApplication(applicationId);
+        List<ScheduledPayment> scheduledPaymentList = paymentService.getScheduledPayment(applicationId);
+        double pendingLoanAmount = loanApplication.amount;
+        for (ScheduledPayment scheduledPayment : scheduledPaymentList) {
+            if (scheduledPayment.status == PaymentStatus.PAID) {
+                pendingLoanAmount -= scheduledPayment.paidAmount;
+            }
+        }
+        if (pendingLoanAmount <= 0.0) {
+            loanApplication.status = LoanStatus.CLOSED;
+        }
+        return loanApplication;
     }
 
     private LoanApplication disburse(LoanApplication loanApplication) {
