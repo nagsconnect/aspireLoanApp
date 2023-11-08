@@ -65,7 +65,7 @@ public class DefaultPaymentService implements PaymentService {
 
     @Override
     public List<ScheduledPayment> getScheduledPayment(String loanApplicationId) {
-        return scheduledPaymentDao.get(loanApplicationId).orElseThrow(() -> new NoSuchElementException("no loan application found"));
+        return scheduledPaymentDao.get(loanApplicationId).orElseThrow(() -> new NoSuchElementException("LoanApplication has no scheduled payments either it is not processed or no such loan application exists"));
     }
 
     @Override

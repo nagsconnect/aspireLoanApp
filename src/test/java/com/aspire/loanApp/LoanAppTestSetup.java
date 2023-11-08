@@ -22,6 +22,8 @@ public class LoanAppTestSetup {
     public AccountService accountService;
     public UserService userService;
 
+    public TransactionDao transactionDao;
+
     public PaymentService paymentService;
     public LoanApplicationService loanApplicationService;
 
@@ -29,7 +31,7 @@ public class LoanAppTestSetup {
         AccountDao accountDao = new AccountDao();
         UserDao userDao = new UserDao();
         ScheduledPaymentDao scheduledPaymentDao = new ScheduledPaymentDao();
-        TransactionDao transactionDao = new TransactionDao();
+        transactionDao = new TransactionDao();
         LoanApplicationDao loanApplicationDao = new LoanApplicationDao();
         accountService = new DefaultAccountService(accountDao);
         userService = new DefaultUserService(userDao);
