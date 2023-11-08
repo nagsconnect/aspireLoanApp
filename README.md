@@ -20,6 +20,7 @@ mvn spring-boot:run
 * Assuming postman is downloaded and import the json file from folder **postmanCollection** of the repo cloned/git
 * There are various apis supported with each api explained below as per customer actions.
 * Before running any api, ensure the spring boot application is running on localhost
+* Run the unit tests via any jvm ide. UnitTests are covered for all service layer functionality.
 ### Follow stepwise for application functionality (you can any order to see how apis handle exceptions/validations)
 Each of the step mentioned below has example data that shows required fields associated with each request to succeed.
 * First, Run the apis in folder ```prereqToRun``` with example data. This should create users, accounts
