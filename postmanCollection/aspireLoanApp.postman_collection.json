@@ -656,6 +656,95 @@
 			]
 		},
 		{
+			"name": "CloseLoanApplication",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/loan-applications/close?applicationId=1&userId=admin@gmail.comc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"loan-applications",
+						"close"
+					],
+					"query": [
+						{
+							"key": "applicationId",
+							"value": "1"
+						},
+						{
+							"key": "userId",
+							"value": "admin@gmail.comc"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "sampleCloseLoanApplication",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/loan-applications/close?applicationId=1&userId=admin@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"loan-applications",
+								"close"
+							],
+							"query": [
+								{
+									"key": "applicationId",
+									"value": "1"
+								},
+								{
+									"key": "userId",
+									"value": "admin@gmail.com"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 08 Nov 2023 08:17:44 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"applicationId\": \"1\",\n    \"userId\": \"test@gmail.com\",\n    \"accountId\": \"1\",\n    \"amount\": 5000,\n    \"term\": 5,\n    \"processingFee\": 0,\n    \"status\": \"CLOSED\"\n}"
+				}
+			]
+		},
+		{
 			"name": "LoanApplicationDetailedView",
 			"request": {
 				"method": "GET",
